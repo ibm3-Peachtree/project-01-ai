@@ -7,9 +7,8 @@ class FAQCreateRequest(BaseModel) :
 
 class FAQResponse(BaseModel) :
     question_id : int
-    user_id : int
     comment : str
-    status : str
+    status : Optional[str] = "success"
 
 class FAQData(BaseModel) :
     notice_id : int

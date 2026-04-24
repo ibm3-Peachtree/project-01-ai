@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import base64
 
 from schemas.faq import *
+from schemas.summary import *
 
 from llama_index.core import (
     VectorStoreIndex, StorageContext, 
@@ -16,9 +17,6 @@ from llama_index.llms.gemini import Gemini
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import torch
-
-# from google import genai
-# from google.genai.errors import ServerError
 
 load_dotenv()
 
@@ -79,17 +77,43 @@ class RAGService :
 
         self.index.storage_context.persist(persist_dir="./storage")
 
-    def generate_answer(self, title : str, content : str) :
+    def generate_answer(self, data : FAQCreateRequest) :
         """
         title : 질문 제목
         content : 질문 내용
         """
+        decoded_content = base64.b64decode(data.content).decode('utf-8')
         # 프롬프트 템플릿의 변수 {title}, {content}와 일치하도록 구성합니다.
-        query_str = f"제목: {title}\n내용: {content}"
+        query_str = f"제목: {data.title}\n내용: {decoded_content}"
 
         # 쿼리 엔진을 통해 답변 생성
         response = self.query_engine.query(query_str)
-
+        print(response)
         return str(response)
 
+class SummaryService :
+    def __init__(self) :
+        pass
+
+    def summarize_session(self, data : SummaryCreateRequest) :
+        prompt = f"""
+        다음 AI forum 세션 정보를 바탕으로 200자 내외(공백 포함)로 핵심 내용을 요약해 주세요.
+        
+        [제목]: {data.title}
+        [내용]: {data.content}
+        
+        요약:
+        """
+
+        messages = [
+            ChatMessage(role=MessageRole.SYSTEM, content="당신은 전문 요약가입니다. 주어진 정보를 간결하고 명확하게 요약합니다."),
+            ChatMessage(role=MessageRole.USER, content=prompt)
+        ]
+
+        # Settings.llm을 사용하여 응답 생성
+        response = Settings.llm.chat(messages)
+        print(response)
+        return response.message.content.strip()
+
 rag_service_instance = RAGService(persist_dir="./storage")
+sum_service_instance = SummaryService()
