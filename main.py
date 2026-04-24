@@ -1,11 +1,6 @@
 from fastapi import FastAPI
 from routers import ai_router
-<<<<<<< HEAD
-
-API_PREFIX = "/api/v0/ai"
-=======
 import config
->>>>>>> 8404d7a06383f56cdf512e37478e94f83af1ce05
 
 app = FastAPI(
     title="AI Service API",
