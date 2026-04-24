@@ -38,7 +38,7 @@ grpcio-status==1.71.2
 huggingface_hub==0.36.2
 joblib==1.5.3
 jsonpatch==1.33
-jsonpointer==3.1.1
+jsonpointer==1.33
 
 langchain-core==0.3.84
 langchain-huggingface==0.3.1
@@ -69,21 +69,16 @@ pydantic
 pydantic-settings
 
 python-dateutil==2.9.0.post0
-<<<<<<< HEAD
 python-dotenv
+python-jose==3.5.0
 python-multipart
 
-regex==2026.4.4
-requests==2.33.1
-
-=======
-python-jose==3.5.0
 pytz==2026.1.post1
 regex==2026.4.4
 requests==2.33.1
 requests-toolbelt==1.0.0
 rsa==4.9.1
->>>>>>> 8404d7a06383f56cdf512e37478e94f83af1ce05
+
 safetensors==0.7.0
 scikit-learn==1.7.2
 scipy==1.15.3
@@ -104,10 +99,6 @@ tzdata==2026.1
 
 urllib3==2.6.3
 wrapt==2.1.2
-<<<<<<< HEAD
-yarl==1.23.0
-=======
 xxhash==3.6.0
 yarl==1.23.0
 zstandard==0.25.0
->>>>>>> 8404d7a06383f56cdf512e37478e94f83af1ce05
