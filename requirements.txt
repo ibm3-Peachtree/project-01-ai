@@ -1,8 +1,11 @@
+# =========================
+# FASTAPI
+# =========================
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
 
 # =========================
-# CORE NUMPY / SCIENCE STACK (안정 버전)
+# NUMPY / SCIENCE STACK
 # =========================
 numpy==1.26.4
 scipy==1.11.4
@@ -17,11 +20,10 @@ transformers==4.38.2
 tokenizers==0.15.2
 accelerate==0.27.2
 safetensors==0.4.2
-
 sentence-transformers==2.7.0
 
 # =========================
-# LLM / RAG STACK (안정 llama-index)
+# RAG STACK (핵심 수정)
 # =========================
 llama-index==0.10.68
 llama-index-core==0.10.68
@@ -30,8 +32,11 @@ llama-index-embeddings-huggingface==0.2.0
 
 openai==1.40.0
 
+# 👉 이거 추가 (중요)
+llama-index-llms-gemini==0.1.7
+
 # =========================
-# LANGCHAIN (안정 버전)
+# LANGCHAIN (정리된 안정 버전)
 # =========================
 langchain-core==0.1.52
 langchain-huggingface==0.0.3
@@ -70,7 +75,7 @@ tenacity==8.4.2
 joblib==1.4.2
 
 # =========================
-# TEXT / NLP
+# NLP
 # =========================
 nltk==3.8.1
 regex==2024.5.15
