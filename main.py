@@ -11,8 +11,6 @@ app = FastAPI(
     openapi_url=config.API_PREFIX + "/openapi.json"
 )
 
-app.include_router(ai_router.router)
-
 # CORS 설정 추가
 app.add_middleware(
     CORSMiddleware,
@@ -25,6 +23,8 @@ app.add_middleware(
     # 허용할 HTTP 헤더
     allow_headers=["*"],
 )
+
+app.include_router(ai_router.router)
 
 if __name__ == "__main__" :
     import uvicorn
