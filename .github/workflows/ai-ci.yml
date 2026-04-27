@@ -42,6 +42,12 @@ jobs:
           token: "${{ secrets.ACTION_TOKEN }}"
           path: k8s-repo
 
+      - name: Install Kustomize
+        run: |
+          curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
+          sudo mv kustomize /usr/local/bin/
+          kustomize version
+
       - name: Update image tag using Kustomize
         run: |
           cd k8s-repo/ai
