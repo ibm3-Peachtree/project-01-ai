@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routers import ai_router
 import config
 
@@ -11,6 +12,19 @@ app = FastAPI(
 )
 
 app.include_router(ai_router.router)
+
+# CORS 설정 추가
+app.add_middleware(
+    CORSMiddleware,
+    # 허용할 도메인 (프론트엔드 주소)
+    allow_origins=["http://192.168.0.79"], 
+    # 쿠키나 인증 정보를 포함할지 여부
+    allow_credentials=True, 
+    # 허용할 HTTP 메서드
+    allow_methods=["*"], 
+    # 허용할 HTTP 헤더
+    allow_headers=["*"],
+)
 
 if __name__ == "__main__" :
     import uvicorn

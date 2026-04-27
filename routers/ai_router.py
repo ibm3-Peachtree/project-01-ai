@@ -19,6 +19,8 @@ load_dotenv()
 def verify_internal_request(x_internal_secret: str = Header(...)):
     if x_internal_secret != os.getenv("INTERNAL_SECRET"):
         raise HTTPException(status_code=403, detail="권한이 없습니다.")
+    
+
 
 def get_admin_user(credentials: HTTPAuthorizationCredentials = Security(security)):
     secret_key = config.JWT_SECRET_KEY
