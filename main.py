@@ -7,15 +7,16 @@ app = FastAPI(
     title="AI Service API",
     description="AI 생성을 위한 API 서버",
     version="1.0.0",
-    docs_url=config.API_PREFIX + "/docs", 
-    openapi_url=config.API_PREFIX + "/openapi.json"
+    docs_url="/docs", # config.API_PREFIX + 
+    redoc_url="/redoc"
+    # openapi_url="/openapi.json"
 )
 
 # CORS 설정 추가
 app.add_middleware(
     CORSMiddleware,
     # 허용할 도메인 (프론트엔드 주소)
-    allow_origins=["http://192.168.0.79"], 
+    allow_origins=["*"], # http://192.168.0.79
     # 쿠키나 인증 정보를 포함할지 여부
     allow_credentials=True, 
     # 허용할 HTTP 메서드
