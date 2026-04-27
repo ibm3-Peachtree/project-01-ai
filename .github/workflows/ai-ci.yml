@@ -35,7 +35,7 @@ jobs:
 
       # K8s 매니페스트 레포지토리 업데이트
       - name: Checkout kustomize repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         with:
           repository: ibm3-Peachtree/k8s-manifest-repo
           ref: master
@@ -45,7 +45,8 @@ jobs:
       - name: Update image tag using Kustomize
         run: |
           cd k8s-repo/ai
-          kustomize edit set image ${{ secrets.DOCKER_USER }}/project-01-ai=${{ secrets.DOCKER_USER }}/project-01-ai:${{ github.sha }}
+          sed -i "s|image: .*|image: ${{ secrets.DOCKER_USER }}/project-01-ai:${{ github.sha }}|" 1.ai-deployment.yml
+          cat 1.ai-deployment.yml
 
       - name: Commit and Push changes
         run: |
