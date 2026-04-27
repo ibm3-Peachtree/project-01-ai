@@ -113,7 +113,8 @@ class SummaryService :
         # Settings.llm을 사용하여 응답 생성
         response = Settings.llm.chat(messages)
         print(response)
-        return response.message.content.strip()
+        decoded_response = base64.b64decode(data.content).decode('utf-8')
+        return decoded_response.message.content.strip()
 
 rag_service_instance = RAGService(persist_dir="./storage")
 sum_service_instance = SummaryService()
