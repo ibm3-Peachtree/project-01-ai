@@ -64,7 +64,7 @@ async def generate_answer(faq_id : int, data : FAQCreateRequest) :
     
     # 2. 생성된 답변을 Spring Boot DB 저장 API로 전송 (Webhook 응답)
     # Spring Boot에 이 엔드포인트가 미리 만들어져 있어야 합니다.
-    spring_boot_save_url = "http://localhost:8080/api/v0/supports/faq/ans/save-answer"
+    spring_boot_save_url = "http://192.168.0.79/" + config.API_PREFIX[1:-3] + "/supports/faq/ans/save-answer"
     payload = {
             "question_id": faq_id,
             "comment": answer_text
