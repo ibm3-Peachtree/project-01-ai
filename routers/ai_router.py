@@ -5,6 +5,7 @@ from fastapi import Header, HTTPException, Depends, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt, JWTError
 from dotenv import load_dotenv
+import logging
 
 import config
 from schemas.faq import *
@@ -12,6 +13,9 @@ from schemas.summary import *
 from services.ai_service import rag_service_instance, sum_service_instance
 
 router = APIRouter(prefix=config.API_PREFIX)
+
+logger = logging.getLogger("uvicorn")
+logger.setLevel(logging.INFO)
 
 # Security
 security = HTTPBearer()
@@ -55,6 +59,7 @@ def get_admin_user(credentials: HTTPAuthorizationCredentials = Security(security
 @router.post("/sync-rag", dependencies=[Depends(verify_internal_request)])
 async def sync_rag(data : FAQData) :
     # print("sync_rag 접속 성공")
+    logger.info("/sync-rag 접근")
     rag_service_instance.add_document(data)
     return {"message" : "RAG updated successfully"}
 
@@ -62,7 +67,9 @@ async def sync_rag(data : FAQData) :
 async def generate_answer(faq_id : int, data : FAQCreateRequest) :
     # print("generate_answer 접속 성공")
     # 1. RAG 서비스로 답변 생성
+    logger.info("/faq_generate 접근")
     answer_text = rag_service_instance.generate_answer(data)
+    logger.info("/faq_generate rag 답변 생성 완료")
     
     # 2. 생성된 답변을 Spring Boot DB 저장 API로 전송 (Webhook 응답)
     # Spring Boot에 이 엔드포인트가 미리 만들어져 있어야 합니다.
@@ -74,9 +81,11 @@ async def generate_answer(faq_id : int, data : FAQCreateRequest) :
     async with httpx.AsyncClient() as client:
         try :
             # 스프링 부트로 답변 전송
+            logger.info("Spring Boot로 답변 전송 중")
             response = await client.post(spring_boot_save_url, json=payload, timeout=60)
+            logger.info("Spring Boot로 답변 전송 완료")
         except Exception as e :
-            print(f"Spring Boot 웹훅 전송 실패: {e}")
+            logger.error(f"Spring Boot 웹훅 전송 실패: {e}")
     
     return {
         "question_id": faq_id,
@@ -89,6 +98,7 @@ async def summarize_session(
     data : SummaryCreateRequest,
     admin_info: dict = Depends(get_admin_user)
 ) :
+    logger.info("/summarize_session 접근")
     response = sum_service_instance.summarize_session(data)
 
     return {
