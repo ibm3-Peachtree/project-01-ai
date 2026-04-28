@@ -83,6 +83,8 @@ async def generate_answer(faq_id : int, data : FAQCreateRequest) :
             # 스프링 부트로 답변 전송
             logger.info("Spring Boot로 답변 전송 중")
             response = await client.post(spring_boot_save_url, json=payload, timeout=60)
+            logger.info(f"Spring Boot 응답 상태 코드: {response.status_code}")
+            logger.info(f"Spring Boot 응답 본문: {response.text}") # 이것이 중요합니다!
             logger.info("Spring Boot로 답변 전송 완료")
         except Exception as e :
             logger.error(f"Spring Boot 웹훅 전송 실패: {e}")
