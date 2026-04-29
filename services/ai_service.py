@@ -85,6 +85,12 @@ class RAGService :
 
             self.index.storage_context.persist(persist_dir="./storage")
             logger.info(f"storage 저장" )
+
+            # ★ 핵심: 쿼리 엔진을 최신 인덱스 상태로 갱신 ★
+            self.query_engine = self.index.as_query_engine(
+                text_qa_template=self.faq_prompt # faq_prompt를 클래스 속성으로 저장해두면 편합니다.
+            )
+            logger.info("쿼리 엔진 갱신 완료")
         
         except Exception as e :
             logger.error(f"에러 : {e}")
