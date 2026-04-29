@@ -53,7 +53,7 @@ class RAGService :
             self.index = VectorStoreIndex([])
             print("새 인덱스를 생성합니다.")
         
-        faq_prompt = PromptTemplate(
+        self.faq_prompt = PromptTemplate(
             """
             "당신은 제공된 AI 포럼의 공지사항(Context) 정보를 바탕으로 사용자의 질문에 한국어로 친절하게 답변하는 AI입니다.\n"
             "답변은 공지사항의 격식에 맞춰 작성하세요. 그리고 '[AI가 생성한 답변입니다.]'를 말머리에 붙여주세요.\n"
@@ -65,7 +65,7 @@ class RAGService :
             """
         )
         self.query_engine = self.index.as_query_engine(
-            text_qa_template=faq_prompt
+            text_qa_template=self.faq_prompt
         )
         
 
